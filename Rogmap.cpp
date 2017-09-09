@@ -7,7 +7,7 @@ Rogmap::Rogmap(int width, int height) {
     *map = (map_t) { .elements = malloc(height*width*sizeof(char)), .height=height, .width=width };
 }
 
-char* Rogmap::fill(float min_filling, float max_room_size) {
+void Rogmap::fill(float min_filling, float max_room_size) {
     fill_map(map, min_filling, max_room_size)
 }
 
