@@ -11,10 +11,13 @@
 class Rogmap
 {
   public:
-    Rogmap();
-    char* get_map();
+    Rogmap(int width, int height);
+    char* as_char_array();
+    int get_width();
+    int get_height();
+
   private:
-    char* map;
+    map_t map;
 };
 
 #endif
