@@ -12,6 +12,9 @@
       __typeof__ (b) _b = (b); \
     _a < _b ? _a : _b; })
 
+// Available room generators
+void (*rooms_generators[]) (map_t*, listing_t*, listing_t*, float) = { generate_rectangular_room, generate_elliptic_room };
+
 int fill_map(map_t* map, float min_filling, float max_room_size) {
     if (min_filling >= 1 ||
             min_filling <= 0 ||
