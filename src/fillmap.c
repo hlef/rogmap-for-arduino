@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include "fillmap.h"
 
 #define ARR_SIZE(arr) (sizeof((arr)) / sizeof((arr[0])) )
