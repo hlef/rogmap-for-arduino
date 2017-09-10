@@ -6,7 +6,7 @@
 #ifndef Rogmap_h
 #define Rogmap_h
 
-#include "src/fillmap.h"
+#include "fillmap.h"
 
 class Rogmap
 {
@@ -19,7 +19,7 @@ class Rogmap
         int get_height();
 
     private:
-        map_t map;
+        map_t *map;
 };
 
 #endif
