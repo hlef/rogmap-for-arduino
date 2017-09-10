@@ -1,14 +1,13 @@
+#include <stdlib.h>
 #include "Rogmap.h"
 
 Rogmap::Rogmap(int width, int height) {
-    srand(10); // TODO Constant seed is only temporary
-
     map_t *map = malloc(sizeof(map_t));
-    *map = (map_t) { .elements = malloc(height*width*sizeof(char)), .height=height, .width=width };
+    *map = (map_t) { .width=width, .height=height, .elements = malloc(height*width*sizeof(char)) };
 }
 
 void Rogmap::fill(float min_filling, float max_room_size) {
-    fill_map(map, min_filling, max_room_size)
+    fill_map(&map, min_filling, max_room_size);
 }
 
 char* Rogmap::as_char_array() {
