@@ -10,15 +10,15 @@
 
 class Rogmap
 {
-  public:
-    Rogmap(int width, int height);
-    char* as_char_array();
-    void fill(float min_filling, float max_room_size);
-    int get_width();
-    int get_height();
+    public:
+        Rogmap(int width, int height);
+        char* as_char_array();
+        void fill(float min_filling, float max_room_size);
+        int get_width();
+        int get_height();
 
-  private:
-    map_t map;
+    private:
+        map_t map;
 };
 
 #endif
