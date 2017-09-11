@@ -18,7 +18,7 @@ class Rogmap
         int get_width();
         int get_height();
 
-    private:
+    protected:
         map_t *map;
 };
 
