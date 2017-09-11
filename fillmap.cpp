@@ -1,10 +1,6 @@
 #include "fillmap.h"
-
 #include <stdlib.h>
 #include <string.h>
-
-// Available room generators
-void (*rooms_generators[]) (map_t*, listing_t*, float) = { generate_rectangular_room, generate_elliptic_room };
 
 int fill_map(map_t* map, float min_filling, float max_room_size) {
     if (min_filling >= 1 ||
@@ -47,7 +43,7 @@ int fill_map(map_t* map, float min_filling, float max_room_size) {
     // Generation loop
     int i = 0;
     do {
-        get_room_generator()(map, generation_buffer, max_room_size);
+        generate_elliptic_room(map, generation_buffer, max_room_size);
         i += insert_room(map, generation_buffer);
     } while (i < map_size * min_filling);
 
@@ -65,22 +61,6 @@ int insert_room(map_t* map, listing_t* room) {
         }
     }
     return inserted;
-}
-
-int is_suitable_initial_point(map_t* map, coordinate initial_point, int dir_right, int dir_up) {
-    int valid_height;
-
-    if (dir_up) {
-        valid_height = initial_point.y > 2;
-    } else {
-        valid_height = map->height - initial_point.y > 2;
-    }
-
-    if (dir_right) {
-        return map->width - initial_point.x > 2 && valid_height;
-    } else {
-        return initial_point.x > 2 && valid_height;
-    }
 }
 
 /* Return pseudo random number in range [min, max). If min == max, return max.
@@ -102,53 +82,6 @@ int randrange(int max, int min) {
     } while ( num_rand - defect <= (unsigned int) x );
 
     return (x / bin_size) + min;
-}
-
-/* Generate a rectangular room in passed map with at least one point in passed
-   generation_buffer array. Write the coordinates constituing the generated
-   room in generation_buffer. */
-void generate_rectangular_room(map_t* map, listing_t* generation_buffer, float max_room_size_factor) {
-    coordinate initial_point;
-
-    // dir_right = 1 => build in right direction, dir_up = 1 => build in top direction
-    int dir_right, dir_up;
-
-    do {
-        dir_right = randrange(2, 0);
-        dir_up = randrange(2, 0);
-        initial_point = generation_buffer->coordinates[rand() % generation_buffer->size];
-    } while ( !is_suitable_initial_point(map, initial_point, dir_right, dir_up) );
-
-    int width, height;
-
-    if (dir_up) {
-        height = randrange(MIN(map->height * max_room_size_factor, initial_point.y), 2);
-    } else {
-        height = randrange(MIN(map->height * max_room_size_factor, map->height - initial_point.y), 2);
-    }
-
-    if (dir_right) {
-        width = randrange(MIN(map->width * max_room_size_factor, map->width - initial_point.x), 2);
-    } else {
-        width = randrange(MIN(map->width * max_room_size_factor, initial_point.x), 2);
-    }
-
-    memset(generation_buffer->coordinates, 0, generation_buffer->size * sizeof(coordinate));
-
-    int x, y = initial_point.y, i = 0;
-    for ( int h = 0; h < height; h++ ) {
-        x = initial_point.x;
-
-        for ( int w = 0; w < width; w++ ) {
-            generation_buffer->coordinates[i] = (coordinate) { .x = x, .y = y };
-            dir_right ? x++ : x--;
-            i++;
-        }
-
-        dir_up ? y-- : y++;
-    }
-
-    generation_buffer->size = i;
 }
 
 /* Generate a elliptic room in passed map with at least one point in passed
@@ -187,9 +120,4 @@ void generate_elliptic_room(map_t* map, listing_t* generation_buffer, float max_
     }
 
     generation_buffer->size = i;
-}
-
-/* Return a randomly-chosen element from the rooms_generators array */
-void ( *get_room_generator() ) (map_t*, listing_t*, float) {
-    return rooms_generators[randrange(ARR_SIZE(rooms_generators), 0)];
 }
