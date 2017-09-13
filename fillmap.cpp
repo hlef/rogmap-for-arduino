@@ -1,6 +1,7 @@
 #include "fillmap.h"
 #include <stdlib.h>
 #include <string.h>
+#include <Arduboy2.h>
 
 int fill_map(map_t* map, float min_filling, float max_room_size) {
     if (min_filling >= 1 ||
@@ -16,24 +17,18 @@ int fill_map(map_t* map, float min_filling, float max_room_size) {
     // Initialize map
     memset(map->elements, CHAR_EMPTY, map_size * sizeof(char));
 
-    coordinate* point = (coordinate*) malloc(sizeof(coordinate));
-
-    if(point == NULL) {
-        return -1;
-    }
+    coordinate point;
 
     // Choose initial point at random, make sure it fulfills is_suitable_initial_point
     do {
-        *point = (coordinate) { .x = randrange(map->width, 0), .y = randrange(map->height, 0)};
-    } while (!is_suitable_initial_point(map, *point));
+        point = (coordinate) { .x = randrange(map->width, 0), .y = randrange(map->height, 0)};
+    } while (!is_suitable_initial_point(map, point));
 
     // Generation loop
     int i = 0;
     do {
-        i += generate_elliptic_room(map, point, max_room_size);
+        i += generate_elliptic_room(map, &point, max_room_size);
     } while (i < map_size * min_filling);
-
-    free(point);
 
     return 0;
 }

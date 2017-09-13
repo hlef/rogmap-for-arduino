@@ -15,7 +15,7 @@
     _a < _b ? _a : _b; })
 
 typedef struct {
-  int x, y;
+  unsigned short x, y;
 } coordinate;
 
 typedef struct {
