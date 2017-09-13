@@ -23,17 +23,16 @@ typedef struct {
   char* elements;
 } map_t;
 
-typedef struct {
-  int size;
-  coordinate* coordinates;
-} listing_t;
-
 int fill_map(map_t* map_buffer, float min_filling, float max_room_size);
 
-int insert_room(map_t* map, listing_t* room);
+int add_point(map_t* map, coordinate point);
+
+int is_suitable_initial_point(map_t* map, coordinate initial_point);
 
 int randrange(int max, int min);
 
-void generate_elliptic_room(map_t* map, listing_t* available_space, float max_room_size_factor);
+int generate_elliptic_room(map_t* map, coordinate* point, float max_room_size_factor);
+
+void compute_room_dimensions(map_t* map, coordinate* point, int *height, int *width, float max_room_size_factor);
 
 #endif
