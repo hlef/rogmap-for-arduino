@@ -21,7 +21,7 @@ int fill_map(map_t* map, float min_filling, float max_room_size) {
 
     // Choose initial point at random, make sure it fulfills is_suitable_initial_point
     do {
-        point = (coordinate) { .x = randrange(map->width, 0), .y = randrange(map->height, 0)};
+        point = (coordinate) { .x = random(0, map->width), .y = random(0, map->height)};
     } while (!is_suitable_initial_point(map, point));
 
     // Generation loop
@@ -49,36 +49,15 @@ int is_suitable_initial_point(map_t* map, coordinate initial_point) {
     return 1;
 }
 
-/* Return pseudo random number in range [min, max). If min == max, return max.
-   Assumes min <= max <= RAND_MAX */
-int randrange(int max, int min) {
-    if (max == min) {
-        return max;
-    }
-
-    max -= (min + 1);
-
-    unsigned int num_bins = (unsigned int) max + 1,
-                 num_rand = (unsigned int) RAND_MAX + 1,
-                 bin_size = num_rand / num_bins,
-                 defect   = num_rand % num_bins, x;
-
-    do {
-        x = rand();
-    } while ( num_rand - defect <= (unsigned int) x );
-
-    return (x / bin_size) + min;
-}
-
 void compute_room_dimensions(map_t* map, coordinate* point, int *height, int *width, float max_room_size_factor) {
-    int max_height = MIN(map->height - point->y, point->y);
-    max_height = MIN(max_height, map->height * max_room_size_factor * 0.5f);
+    int max_height = min(map->height - point->y, point->y);
+    max_height = min(max_height, map->height * max_room_size_factor * 0.5f);
 
-    int max_width = MIN(map->width - point->x, point->x);
-    max_width = MIN(max_width, map->width * max_room_size_factor * 0.5f);
+    int max_width = min(map->width - point->x, point->x);
+    max_width = min(max_width, map->width * max_room_size_factor * 0.5f);
 
-    *height = randrange(max_height, 1);
-    *width = randrange(max_width, 1);
+    *height = random(1, max_height);
+    *width = random(1, max_width);
 }
 
 /* Generate an elliptic room in passed map around passed point. Return the
@@ -99,7 +78,7 @@ int generate_elliptic_room(map_t* map, coordinate* point, float max_room_size_fa
                 coordinate newpnt = (coordinate) { .x = point->x + x, .y = point->y + y };
                 i += add_point(map, newpnt);
                 if(is_suitable_initial_point(map, newpnt)){
-                    if((rand() % len) == 0) {
+                    if((random() % len) == 0) {
                         current_replacement = newpnt;
                     }
                     len++;
