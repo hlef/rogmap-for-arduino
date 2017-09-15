@@ -2,7 +2,7 @@
 
 #define ROGMAP_H
 #define CHAR_ROOM '#'
-#define CHAR_EMPTY ' '
+#define CHAR_EMPTY ':'
 
 #define ARR_SIZE(arr) (sizeof((arr)) / sizeof((arr[0])) )
 
