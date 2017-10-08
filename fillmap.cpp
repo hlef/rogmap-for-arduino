@@ -21,7 +21,8 @@ int fill_map(map_t* map, float min_filling, float max_room_size) {
 
     // Choose initial point at random, make sure it fulfills is_suitable_initial_point
     do {
-        point = (coordinate) { .x = random(0, map->width), .y = random(0, map->height)};
+        point = (coordinate) { .x = (unsigned short) random(0, map->width),
+                               .y = (unsigned short) random(0, map->height)};
     } while (!is_suitable_initial_point(map, point));
 
     // Generation loop
