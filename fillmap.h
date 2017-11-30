@@ -33,6 +33,8 @@ int generate_elliptic_room(map_t* map, coordinate* point, float max_room_size_fa
 
 void compute_room_dimensions(map_t* map, coordinate* point, int *height, int *width, float max_room_size_factor);
 
+int get_at_xy(map_t* map, int x, int y);
+
 unsigned int roundUp(unsigned int value, unsigned int roundTo);
 unsigned int roundDown(unsigned int value, unsigned int roundTo);
 

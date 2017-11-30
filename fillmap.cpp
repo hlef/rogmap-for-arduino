@@ -8,6 +8,7 @@ int get_at_xy(map_t* map, int x, int y) {
     int struct_offset = y * map->chunked_width + roundDown(x, sizeof(char) * 8) / (sizeof(char) * 8);
     int bit_offset = x % (sizeof(char) * 8);
 
+    int element;
     switch (bit_offset) {
         case 0:
             element = map->chunks[struct_offset].e1;
@@ -33,9 +34,43 @@ int get_at_xy(map_t* map, int x, int y) {
         case 7:
             element = map->chunks[struct_offset].e8;
             break;
+        default:
+            element = -1;
     }
 
     return element;
+}
+
+int set_at_xy(map_t* map, int x, int y, int to_set) {
+    int struct_offset = y * map->chunked_width + roundDown(x, sizeof(char) * 8) / (sizeof(char) * 8);
+    int bit_offset = x % (sizeof(char) * 8);
+
+    switch (bit_offset) {
+        case 0:
+            map->chunks[struct_offset].e1 = to_set;
+            break;
+        case 1:
+            map->chunks[struct_offset].e2 = to_set;
+            break;
+        case 2:
+            map->chunks[struct_offset].e3 = to_set;
+            break;
+        case 3:
+            map->chunks[struct_offset].e4 = to_set;
+            break;
+        case 4:
+            map->chunks[struct_offset].e5 = to_set;
+            break;
+        case 5:
+            map->chunks[struct_offset].e6 = to_set;
+            break;
+        case 6:
+            map->chunks[struct_offset].e7 = to_set;
+            break;
+        case 7:
+            map->chunks[struct_offset].e8 = to_set;
+            break;
+    }
 }
 
 unsigned int roundUp(unsigned int value, unsigned int roundTo)
@@ -60,7 +95,7 @@ int fill_map(map_t* map, float min_filling, float max_room_size) {
     int map_size = map->width * map->height;
 
     // Initialize map
-    memset(map->elements, CHAR_EMPTY, map_size * sizeof(char));
+    memset(map->chunks, CHAR_EMPTY, map_size * sizeof(char));
 
     coordinate point;
 
@@ -80,8 +115,8 @@ int fill_map(map_t* map, float min_filling, float max_room_size) {
 }
 
 int add_point(map_t* map, coordinate point) {
-    if (ACCESS_XY_IN_ARRAY(map, point.x, point.y) != CHAR_ROOM) {
-        ACCESS_XY_IN_ARRAY(map, point.x, point.y) = CHAR_ROOM;
+    if (get_at_xy(map, point.x, point.y) != CHAR_ROOM) {
+        set_at_xy(map, point.x, point.y, CHAR_ROOM);
         return 1;
     }
     return 0;
