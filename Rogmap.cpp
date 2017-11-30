@@ -3,7 +3,10 @@
 
 Rogmap::Rogmap(int width, int height) {
     map = (map_t *) malloc(sizeof(map_t));
-    *map = (map_t) { .width=width, .height=height, .elements = (char*) malloc(height*width*sizeof(char)) };
+    int chunked_width = roundUp(width, sizeof(char) * 8) / (sizeof(char) * 8);
+    *map = (map_t) { .width = width, .height = height,
+                     .chunked_width = chunked_width,
+                     .elements = (chunk_t*) malloc(height * chunked_width * sizeof(char))};
 }
 
 void Rogmap::fill(float min_filling, float max_room_size) {
