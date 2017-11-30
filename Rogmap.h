@@ -19,10 +19,11 @@ class Rogmap
         int get_width();
         int get_height();
 
-    protected:
-        map_t *map;
         const char char_room;
         const char char_empty;
+
+    protected:
+        map_t *map;
 };
 
 #endif
