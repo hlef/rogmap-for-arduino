@@ -13,6 +13,7 @@ class Rogmap
     public:
         Rogmap(int width, int height, char char_room, char char_empty);
         Rogmap(int width, int height): Rogmap(width, height, '#', ':') {}
+        ~Rogmap();
         char* as_char_array();
         char get_char_at(int x, int y);
         void fill(float min_filling, float max_room_size);
