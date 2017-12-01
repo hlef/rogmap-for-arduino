@@ -1,5 +1,4 @@
 #include <stdlib.h>
-#include <iostream>
 #include "Rogmap.h"
 
 Rogmap::Rogmap(int width, int height, char char_room, char char_empty):
